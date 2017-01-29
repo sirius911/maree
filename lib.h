@@ -15,4 +15,5 @@ int	ft_strlen(char *str);
 int	ft_strcmp(char *s1, char *s2);
 char 	*ft_strcpy(char *str, char *str2);
 void 	clean(const char *buffer, FILE *fp);
+int		periodeMaree(int h,double heureDebut, float heureMaree);
 #endif
