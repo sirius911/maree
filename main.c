@@ -13,8 +13,8 @@ int	main(void)
 	double	hF,hD;
 	double 	x,y,hauteurEcran,largeurEcran;
 
-	float 	hauteurDebut = 3.50;
-	float	hauteurFin = 1.10;
+	float 	hauteurDebut = 1.1;
+	float	hauteurFin = 3.5;
 	float	mareeBasse;	
 
 	float	marnage = 0;
@@ -123,7 +123,11 @@ int	main(void)
 	x=0;
 
 	printf("__h__\tPeriode\t     ax + b\tHauteur\t\tX\tY\n");
-	printf("%02dh%02d \t-\t Début de marée\t%.2fm\t\t0\t0\n",heureDebut,minuteDebut,hauteurDebut);
+	printf("%02dh%02d \t-\t Début de marée\t%.2fm\t\t0",heureDebut,minuteDebut,hauteurDebut);
+	if(monte)
+		printf("\t%0.f\n",hauteurEcran);
+	else
+		printf("\t0\n");
 	m++;
 	hc = (heureDebut * 60) + minuteDebut;	// temps minute incrémenté
 	int periodeCourante = 0;
@@ -172,7 +176,12 @@ int	main(void)
 	
 	printf("\t- ");
 	
-	printf("\tFin de marée\t%.2fm\t\t%0.lf\t%0.lf\n",hauteurFin,largeurEcran,hauteurEcran );
+	printf("\tFin de marée\t%.2fm\t\t%0.lf",hauteurFin,largeurEcran );
+
+	if(monte)
+		printf("\t0\n");
+	else
+		printf("\t%0.f\n",hauteurEcran );
 
 	printf("\n\nAu revoir !");
 	return (0);
