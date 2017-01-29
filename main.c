@@ -5,9 +5,9 @@
 int	main(void)
 {
 	
-	int 	heureDebut = 12;
+	int 	heureDebut = 20;
 	int		minuteDebut = 05;
-	int		heureFin = 18;
+	int		heureFin = 02;
 	int		minuteFin = 02;
 	
 	double	hF,hD;
@@ -56,7 +56,22 @@ int	main(void)
 	// calcul durée heure marée
 
 	// TODO Verifier que les heures début-fin sont dans le bon sens ou qu'il n'y a pas de changement de jour
-	dureeMaree = (heureFin * 60 + minuteFin) - (heureDebut * 60 + minuteDebut);
+	
+	if(((heureFin * 60 + minuteFin) - (heureDebut * 60 + minuteDebut)) < 0){
+		// la durée est négative
+		dureeMaree = ((heureFin+24) * 60 + minuteFin) - (heureDebut * 60 + minuteDebut);
+		hF = ((heureFin+24) * 60) + minuteFin;
+	} else {
+		dureeMaree = (heureFin * 60 + minuteFin) - (heureDebut * 60 + minuteDebut);
+		hF = (heureFin * 60) + minuteFin;
+	}
+	hD = (heureDebut * 60) + minuteDebut;
+
+	if(dureeMaree > 420 || dureeMaree < 330){	// 450 = 7h 330 = 3h30
+
+		printf("Erreur : La durée de la marée est ors limite !\n");
+		exit(0);
+	}
 	heureMaree = dureeMaree / 6;
 	
 	largeurEcran = (double) dureeMaree +1;
@@ -114,8 +129,7 @@ int	main(void)
 	ft_putstr("On incremente h de heureDebut a heureFin d'1 minute: \n");
 	printf("soit de %02dh%02d à %02dh%02d \n", heureDebut,minuteDebut,heureFin,minuteFin);
 
-	hF = (heureFin * 60) + minuteFin;
-	hD = (heureDebut * 60) + minuteDebut;
+	
 	int h,m,hc,t0;
 
 	h = heureDebut;		// heure de Calcul
@@ -123,13 +137,13 @@ int	main(void)
 	x=0;
 
 	printf("__h__\tPeriode\t     ax + b\tHauteur\t\tX\tY\n");
-	printf("%02dh%02d \t-\t Début de marée\t%.2fm\t\t0",heureDebut,minuteDebut,hauteurDebut);
+	printf("%02dh%02d \t-\tDébut de marée\t%.2fm\t\t0",heureDebut,minuteDebut,hauteurDebut);
 	if(monte)
 		printf("\t%0.f\n",hauteurEcran);
 	else
 		printf("\t0\n");
 	m++;
-	hc = (heureDebut * 60) + minuteDebut;	// temps minute incrémenté
+	hc = hD;	// temps minute incrémenté
 	int periodeCourante = 0;
 	t0 = hD;
 	int periodeEnCours = 0;
@@ -150,12 +164,13 @@ int	main(void)
 			printf("\t%d \t", periodeCourante);
 
 		}
-		
+		//printf("%d\t%d\n",hc,(hc-t0));
 		// fonction
 		printf("%.2fx + %.2f",a[periodeCourante],b[periodeCourante] );
 
 		// calcul de la hauteur d'eau
-		hauteurEau = ((a[periodeCourante]*(hc-t0)/60)+b[periodeCourante] );
+		//hauteurEau = hauteur(a[periodeCourante],b[periodeCourante],(hc-t0)/60 );
+		hauteurEau = (a[periodeCourante] * (hc-t0)/60) + b[periodeCourante];
 		printf("\t%.2fm",hauteurEau);
 
 		x = (hc - ((heureDebut * 60) + minuteDebut))+1;
@@ -169,6 +184,8 @@ int	main(void)
 		m++;
 		if(m == 60){
 			h++;
+			if(h > 23)
+				h = h-24;
 			m = 0;
 		}
 	}
@@ -191,4 +208,3 @@ int periodeMaree(int h, double heureDebut, float heureMaree){
 	
 	return (int) ((h - heureDebut) / heureMaree);
 }
-
